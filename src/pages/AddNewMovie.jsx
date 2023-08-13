@@ -39,8 +39,9 @@ export default function AddNewMovie() {
       'During the Partition of India in 1947, a Sikh truck driver falls in love with a Muslim girl belonging to an aristocratic family.',
     imageURL:"https://m.media-amazon.com/images/M/MV5BYmU3NDBkOWQtN2JjZi00YzIyLTk5NTYtOGYxOTEzOTRjNzJhXkEyXkFqcGdeQXVyNjQ1MDcxNzM@._V1_.jpg",
   }
-  return <div>
-    <form className="w-full flex flex-col" onSubmit={(e) => { e.preventDefault(); AddNewHandler(formData) }} >
+  return <div className="flex flex-col justify-center items-center p-2">
+    <h1 className="font-bold text-2xl border-b-2 mb-2 border-black">Add New Movie</h1>
+    <form className="w-1/3 flex flex-col  gap-1" onSubmit={(e) => { e.preventDefault(); AddNewHandler(formData) }} >
       <label htmlFor="">
         <input type="text" name="title" placeholder="Enter Movie Name" required onChange={handleChange} value={formData.title} />
       </label>

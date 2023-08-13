@@ -5,10 +5,10 @@ import {
   useReducer,
   useState,
 } from "react";
-import {v4 as uuid} from 'uuid'
+import { v4 as uuid } from 'uuid'
 import { movies } from "../data/data";
 import { toast } from "react-toastify";
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 export const DataContext = createContext();
 const initialValue = {
@@ -18,6 +18,8 @@ const initialValue = {
   genre: "",
   watchList: [],
   starred: [],
+  movieData: JSON.parse(localStorage.getItem("movieData")) || movies,
+
 };
 const reducerFunction = (state, action) => {
   const { type, payload } = action;
@@ -36,7 +38,7 @@ const reducerFunction = (state, action) => {
         ...state,
         watchList: state.watchList.find((item) => item.id == payload)
           ? [...state.watchList.filter((item) => item.id != payload)]
-          : [movies.find((item) => item.id == payload), ...state.watchList],
+          : [state.movieData.find((item) => item.id == payload), ...state.watchList],
       };
     }
     case "STAR":
@@ -44,27 +46,30 @@ const reducerFunction = (state, action) => {
         ...state,
         starred: state.starred.find((item) => item.id == payload)
           ? [...state.starred.filter((item) => item.id != payload)]
-          : [movies.find((item) => item.id == payload), ...state.starred],
+          : [state.movieData.find((item) => item.id == payload), ...state.starred],
       };
-
+    case "ADDMOVIE":
+      return{...state, movieData:payload  }
     default:
       return state;
   }
 };
 export function DataProvider({ children }) {
+  const [movieData, setMovieData] = useState(
+    JSON.parse(localStorage.getItem("movieData")) || movies
+  );
   const [filters, dispatch] = useReducer(
     reducerFunction,
     JSON.parse(localStorage.getItem("filters")) || initialValue
   );
-  const [movieData, setMovieData] = useState(
-    JSON.parse(localStorage.getItem("movieData")) || movies
-  );
+
   const navigate = useNavigate();
   const AllGenres = extractUniqueGenres(movieData);
 
   const AddNewHandler = (newMovie) => {
- const newId= uuid()
-    setMovieData([{...newMovie, id:newId}, ...movieData]);
+    const newId = uuid()
+    setMovieData([{ ...newMovie, id: newId }, ...movieData]);
+    dispatch({type:"ADDMOVIE", payload:[{ ...newMovie, id: newId }, ...movieData]})
     navigate('/')
     toast.success(`${newMovie.title} Added`)
   };
@@ -80,10 +85,10 @@ export function DataProvider({ children }) {
   const searchFiltered =
     filters.search.length > 0
       ? movieData.filter((item) =>
-          item.title.toLowerCase().includes(filters.search.toLowerCase().trim())||
-          item.director.toLowerCase().includes(filters.search.toLowerCase().trim())||
-          item.cast.find(item=>item.toLowerCase().includes(filters.search.toLowerCase().trim()))
-        )
+        item.title.toLowerCase().includes(filters.search.toLowerCase().trim()) ||
+        item.director.toLowerCase().includes(filters.search.toLowerCase().trim()) ||
+        item.cast.find(item => item.toLowerCase().includes(filters.search.toLowerCase().trim()))
+      )
       : movieData;
 
   const genreFiltered =
@@ -101,13 +106,14 @@ export function DataProvider({ children }) {
       ? ratingFiltered.filter((item) => item.year == filters.year)
       : ratingFiltered;
 
-  console.log({ filters },uuid(), { yearFilteredData });
+  console.log({ filters }, uuid(), { yearFilteredData });
 
   const isOnWatchList = (id) => filters?.watchList?.find((item) => item?.id == id);
   const isOnStarredList = (id) => filters?.starred?.find((item) => item?.id == id);
   useEffect(() => {
     localStorage.setItem("movieData", JSON.stringify(movieData));
     localStorage.setItem("filters", JSON.stringify(filters));
+
   }, [movieData, filters]);
   return (
     <DataContext.Provider
