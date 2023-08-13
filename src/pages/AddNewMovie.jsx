@@ -4,12 +4,12 @@ import { useData } from "../context/DataContext";
 
 
 export default function AddNewMovie(){
-  const {AddNewHandler} = useData()
+  const {AddNewHandler,AllGenres} = useData()
  const [formData, setFormData] = useState({
   id:"8349",
   title:"",
   year:"",
-  genre:"",
+  genre:[],
   rating:"",
   director:"",
   writer:"",
@@ -19,6 +19,10 @@ export default function AddNewMovie(){
  })
   const handleChange =(e)=>{
 const {name, value}= e.target;
+if(name==="genre"){
+  setFormData({...formData, [name]:[value]});
+  return;
+}
 
 setFormData({...formData, [name]:value})
   }
@@ -41,15 +45,19 @@ setFormData({...formData, [name]:value})
       <label htmlFor="">
         <input type="text" name="title" placeholder="Enter Movie Name" required onChange={handleChange} value={formData.name}/>
       </label>
+      <select name="genre" id="genre" onChange={handleChange}>
+          <option value=""> Select Genre</option>
+          {
+            AllGenres.map(item => <option value={item}>{item}</option>)
+          }
+        </select>
       <label htmlFor="">
         <input type="number" min={1900} max={2025} name="year" placeholder="Year" required  onChange={handleChange} value={formData.year}/>
       </label>
       <label htmlFor="">
         <input type="number" min={1} max={10} name="rating" placeholder="Rating" required  onChange={handleChange} value={formData.rating}/>
       </label>
-      <label htmlFor="">
-        <input type="text" name="genre" placeholder="Genre" required onChange={handleChange} value={formData.genre}/>
-      </label>
+    
       <label htmlFor="">
         <input type="text" name="cast" placeholder="Cast" required onChange={handleChange} value={formData.cast}/>
       </label>
