@@ -30,7 +30,7 @@ export default function MCard({ movie }) {
               dispatch({ type: "STAR", payload: id });
             }}
           >
-            {isOnStarredList(id) ? "unStar" : "Star"}
+            {isOnStarredList(id) ? "starred" : "Star"}
           </button>
           <button
             onClick={() => {

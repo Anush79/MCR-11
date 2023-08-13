@@ -36,7 +36,7 @@ export default function MovieDescription() {
           <p>Ratings : {rating} ⭐</p>
           <div className="buttons">
           <div className="buttons">
-        <button  onClick={()=>{dispatch({type:"STAR", payload: id})}}>{isOnStarredList(id) ?"unStar":"Star"}</button>
+        <button  onClick={()=>{dispatch({type:"STAR", payload: id})}}>{isOnStarredList(id) ?"Starred":"Star"}</button>
         <button onClick={()=>{dispatch({type:"WATCHLIST", payload: id})}}>{isOnWatchList(id)?"Remove from WatchList":"Add to WatchList"}</button>
       </div>
           </div>
