@@ -5,9 +5,10 @@ import {
   useReducer,
   useState,
 } from "react";
-
+import {v4 as uuid} from 'uuid'
 import { movies } from "../data/data";
 import { toast } from "react-toastify";
+import {useNavigate} from 'react-router-dom'
 
 export const DataContext = createContext();
 const initialValue = {
@@ -58,10 +59,14 @@ export function DataProvider({ children }) {
   const [movieData, setMovieData] = useState(
     JSON.parse(localStorage.getItem("movieData")) || movies
   );
+  const navigate = useNavigate();
   const AllGenres = extractUniqueGenres(movieData);
 
   const AddNewHandler = (newMovie) => {
-    setMovieData([newMovie, ...movieData]);
+ const newId= uuid()
+    setMovieData([{...newMovie, id:newId}, ...movieData]);
+    navigate('/')
+    toast.success(`${newMovie.title} Added`)
   };
 
   function extractUniqueGenres(movies) {
@@ -96,10 +101,10 @@ export function DataProvider({ children }) {
       ? ratingFiltered.filter((item) => item.year == filters.year)
       : ratingFiltered;
 
-  console.log({ filters }, { yearFilteredData });
+  console.log({ filters },uuid(), { yearFilteredData });
 
-  const isOnWatchList = (id) => filters.watchList.find((item) => item.id == id);
-  const isOnStarredList = (id) => filters.starred.find((item) => item.id == id);
+  const isOnWatchList = (id) => filters?.watchList?.find((item) => item?.id == id);
+  const isOnStarredList = (id) => filters?.starred?.find((item) => item?.id == id);
   useEffect(() => {
     localStorage.setItem("movieData", JSON.stringify(movieData));
     localStorage.setItem("filters", JSON.stringify(filters));

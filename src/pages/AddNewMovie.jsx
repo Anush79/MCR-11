@@ -26,26 +26,25 @@ export default function AddNewMovie() {
 
     setFormData({ ...formData, [name]: value })
   }
-  // {
-  //   id: 2,
-  //   title: 'The Godfather',
-  //   year: 1992,
-  //   genre: ['Crime', 'Drama'],
-  //   rating: 9,
-  //   director: 'Francis Ford Coppola',
-  //   writer: 'Mario Puzo',
-  //   cast: ['Marlon Brando', 'Al Pacino'],
-  //   summary:
-  //     'The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son.',
-  //   imageURL:
-  //     'https://m.media-amazon.com/images/M/MV5BM2MyNjYxNmUtYTAwNi00MTYxLWJmNWYtYzZlODY3ZTk3OTFlXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_FMjpg_UX1000_.jpg',
-  // },
+  const testData = {
+    id: "kjdaslkj48923sjdfkj39",
+    title: 'Gadar, Ek Prem Katha',
+    year: 2001,
+    genre: ['Romance', 'Drama'],
+    rating: 10,
+    director: 'Anil Sharma',
+    writer: 'Shaktiman Talwar',
+    cast: ['Sunny Deol', 'Amisha Patel'],
+    summary:
+      'During the Partition of India in 1947, a Sikh truck driver falls in love with a Muslim girl belonging to an aristocratic family.',
+    imageURL:"https://m.media-amazon.com/images/M/MV5BYmU3NDBkOWQtN2JjZi00YzIyLTk5NTYtOGYxOTEzOTRjNzJhXkEyXkFqcGdeQXVyNjQ1MDcxNzM@._V1_.jpg",
+  }
   return <div>
     <form className="w-full flex flex-col" onSubmit={(e) => { e.preventDefault(); AddNewHandler(formData) }} >
       <label htmlFor="">
-        <input type="text" name="title" placeholder="Enter Movie Name" required onChange={handleChange} value={formData.name} />
+        <input type="text" name="title" placeholder="Enter Movie Name" required onChange={handleChange} value={formData.title} />
       </label>
-      <select name="genre" id="genre" onChange={handleChange}>
+      <select name="genre" id="genre" onChange={handleChange} value={formData.genre[0]}>
         <option value=""> Select Genre</option>
         {
           AllGenres.map(item => <option value={item}>{item}</option>)
@@ -73,7 +72,13 @@ export default function AddNewMovie() {
       <label htmlFor="">
         <textarea name="summary" id="" cols="30" rows="3" placeholder="Add Movie Summary here" required onChange={handleChange} value={formData.summary}></textarea>
       </label>
-      <button>Submit Movie</button>
+      <div className="buttons">
+        <button onClick={(e)=>{e.preventDefault();
+        setFormData(testData)
+        }}>Fill with test data</button>
+         <button>Submit Movie</button> 
+      </div>
+     
     </form>
   </div>
 }
