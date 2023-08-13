@@ -12,7 +12,7 @@ import { toast } from "react-toastify";
 export const DataContext = createContext();
 const initialValue = {
   year: 0,
-  search:"",
+  search: "",
   rating: "",
   genre: "",
   watchList: [],
@@ -21,8 +21,8 @@ const initialValue = {
 const reducerFunction = (state, action) => {
   const { type, payload } = action;
   switch (type) {
-    case "SEARCH": 
-      return {...state, search:payload};
+    case "SEARCH":
+      return { ...state, search: payload };
     case "YEAR":
       return { ...state, year: payload };
     case "RATING":
@@ -47,7 +47,7 @@ const reducerFunction = (state, action) => {
       };
 
     default:
-      return state
+      return state;
   }
 };
 export function DataProvider({ children }) {
@@ -71,10 +71,15 @@ export function DataProvider({ children }) {
     }
     return Array.from(uniqueGenres);
   }
- 
-  const searchFiltered =  filters.search.length > 0
-  ? movieData.filter((item) => item.title.toLowerCase().includes(filters.search.toLowerCase().trim()))
-  : movieData;
+
+  const searchFiltered =
+    filters.search.length > 0
+      ? movieData.filter((item) =>
+          item.title.toLowerCase().includes(filters.search.toLowerCase().trim())||
+          item.director.toLowerCase().includes(filters.search.toLowerCase().trim())||
+          item.cast.find(item=>item.toLowerCase().includes(filters.search.toLowerCase().trim()))
+        )
+      : movieData;
 
   const genreFiltered =
     filters.genre.length > 0
@@ -85,21 +90,32 @@ export function DataProvider({ children }) {
     filters.rating > 0
       ? genreFiltered.filter((item) => item.rating == filters.rating)
       : genreFiltered;
-  
-      const yearFilteredData  = filters.year>0 ?
-       ratingFiltered.filter(item=> item.year == filters.year) : ratingFiltered;
 
-console.log({filters}, {yearFilteredData})
+  const yearFilteredData =
+    filters.year > 0
+      ? ratingFiltered.filter((item) => item.year == filters.year)
+      : ratingFiltered;
 
-const isOnWatchList = (id)=>filters.watchList.find(item=>item.id == id)
-const isOnStarredList = (id)=>filters.starred.find(item=>item.id == id)
+  console.log({ filters }, { yearFilteredData });
+
+  const isOnWatchList = (id) => filters.watchList.find((item) => item.id == id);
+  const isOnStarredList = (id) => filters.starred.find((item) => item.id == id);
   useEffect(() => {
     localStorage.setItem("movieData", JSON.stringify(movieData));
     localStorage.setItem("filters", JSON.stringify(filters));
   }, [movieData, filters]);
   return (
     <DataContext.Provider
-      value={{ movieData, AllGenres, dispatch,yearFilteredData, filters, AddNewHandler ,isOnWatchList,isOnStarredList}}
+      value={{
+        movieData,
+        AllGenres,
+        dispatch,
+        yearFilteredData,
+        filters,
+        AddNewHandler,
+        isOnWatchList,
+        isOnStarredList,
+      }}
     >
       {children}
     </DataContext.Provider>

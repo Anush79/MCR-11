@@ -3,28 +3,28 @@ import { useData } from "../context/DataContext";
 
 
 
-export default function AddNewMovie(){
-  const {AddNewHandler,AllGenres} = useData()
- const [formData, setFormData] = useState({
-  id:"8349",
-  title:"",
-  year:"",
-  genre:[],
-  rating:"",
-  director:"",
-  writer:"",
-  cast:"",
-  summary:"",
-  imageURL:""
- })
-  const handleChange =(e)=>{
-const {name, value}= e.target;
-if(name==="genre"){
-  setFormData({...formData, [name]:[value]});
-  return;
-}
+export default function AddNewMovie() {
+  const { AddNewHandler, AllGenres } = useData()
+  const [formData, setFormData] = useState({
+    id: "8349",
+    title: "",
+    year: "",
+    genre: [],
+    rating: "",
+    director: "",
+    writer: "",
+    cast: [],
+    summary: "",
+    imageURL: ""
+  })
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    if (name === "genre" || name === "cast") {
+      setFormData({ ...formData, [name]: [value] });
+      return;
+    }
 
-setFormData({...formData, [name]:value})
+    setFormData({ ...formData, [name]: value })
   }
   // {
   //   id: 2,
@@ -41,34 +41,34 @@ setFormData({...formData, [name]:value})
   //     'https://m.media-amazon.com/images/M/MV5BM2MyNjYxNmUtYTAwNi00MTYxLWJmNWYtYzZlODY3ZTk3OTFlXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_FMjpg_UX1000_.jpg',
   // },
   return <div>
-    <form className="w-full flex flex-col" onSubmit={(e)=>{e.preventDefault(); AddNewHandler(formData)}} >
+    <form className="w-full flex flex-col" onSubmit={(e) => { e.preventDefault(); AddNewHandler(formData) }} >
       <label htmlFor="">
-        <input type="text" name="title" placeholder="Enter Movie Name" required onChange={handleChange} value={formData.name}/>
+        <input type="text" name="title" placeholder="Enter Movie Name" required onChange={handleChange} value={formData.name} />
       </label>
       <select name="genre" id="genre" onChange={handleChange}>
-          <option value=""> Select Genre</option>
-          {
-            AllGenres.map(item => <option value={item}>{item}</option>)
-          }
-        </select>
+        <option value=""> Select Genre</option>
+        {
+          AllGenres.map(item => <option value={item}>{item}</option>)
+        }
+      </select>
       <label htmlFor="">
-        <input type="number" min={1900} max={2025} name="year" placeholder="Year" required  onChange={handleChange} value={formData.year}/>
+        <input type="number" min={1900} max={2025} name="year" placeholder="Year" required onChange={handleChange} value={formData.year} />
       </label>
       <label htmlFor="">
-        <input type="number" min={1} max={10} name="rating" placeholder="Rating" required  onChange={handleChange} value={formData.rating}/>
+        <input type="number" min={1} max={10} name="rating" placeholder="Rating" required onChange={handleChange} value={formData.rating} />
       </label>
-    
+
       <label htmlFor="">
-        <input type="text" name="cast" placeholder="Cast" required onChange={handleChange} value={formData.cast}/>
-      </label>
-      <label htmlFor="">
-        <input type="text" name="director" placeholder="Director" required onChange={handleChange} value={formData.director}/>
+        <input type="text" name="cast" placeholder="Cast" required onChange={handleChange} value={formData.cast} />
       </label>
       <label htmlFor="">
-        <input type="text" name="writer" placeholder="Writer" required onChange={handleChange} value={formData.writer}/>
+        <input type="text" name="director" placeholder="Director" required onChange={handleChange} value={formData.director} />
       </label>
       <label htmlFor="">
-        <input type="url" name="imageURL" placeholder="imageUrl" required onChange={handleChange} value={formData.imageURL}/>
+        <input type="text" name="writer" placeholder="Writer" required onChange={handleChange} value={formData.writer} />
+      </label>
+      <label htmlFor="">
+        <input type="url" name="imageURL" placeholder="imageUrl" required onChange={handleChange} value={formData.imageURL} />
       </label>
       <label htmlFor="">
         <textarea name="summary" id="" cols="30" rows="3" placeholder="Add Movie Summary here" required onChange={handleChange} value={formData.summary}></textarea>

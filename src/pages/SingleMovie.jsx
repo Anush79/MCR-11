@@ -32,7 +32,7 @@ export default function MovieDescription() {
           <p>Genre : {genre}</p>
           <p>Director : {director}</p>
           <p>Writer : {writer}</p>
-          <p>Cast : {cast}</p>
+          <p>Cast : {cast.map(item=><span className="font-italics">{item}</span>)}</p>
           <p>Ratings : {rating} ⭐</p>
           <div className="buttons">
           <div className="buttons">
