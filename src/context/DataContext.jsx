@@ -90,13 +90,16 @@ export function DataProvider({ children }) {
        ratingFiltered.filter(item=> item.year == filters.year) : ratingFiltered;
 
 console.log({filters}, {yearFilteredData})
+
+const isOnWatchList = (id)=>filters.watchList.find(item=>item.id == id)
+const isOnStarredList = (id)=>filters.starred.find(item=>item.id == id)
   useEffect(() => {
     localStorage.setItem("movieData", JSON.stringify(movieData));
     localStorage.setItem("filters", JSON.stringify(filters));
   }, [movieData, filters]);
   return (
     <DataContext.Provider
-      value={{ movieData, AllGenres, dispatch,yearFilteredData, filters, AddNewHandler }}
+      value={{ movieData, AllGenres, dispatch,yearFilteredData, filters, AddNewHandler ,isOnWatchList,isOnStarredList}}
     >
       {children}
     </DataContext.Provider>

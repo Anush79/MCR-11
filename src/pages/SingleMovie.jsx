@@ -3,7 +3,8 @@ import { useData } from "../context/DataContext";
 
 export default function MovieDescription() {
   const { movieId } = useParams();
-  const { movieData } = useData();
+ 
+  const {dispatch,isOnWatchList,isOnStarredList,movieData} = useData()
   const movie = movieData.find((item) => item.id == movieId);
   const {
     id,
@@ -34,8 +35,10 @@ export default function MovieDescription() {
           <p>Cast : {cast}</p>
           <p>Ratings : {rating} ⭐</p>
           <div className="buttons">
-            <button>Star</button>
-            <button>Add to WishList</button>
+          <div className="buttons">
+        <button  onClick={()=>{dispatch({type:"STAR", payload: id})}}>{isOnStarredList(id) ?"unStar":"Star"}</button>
+        <button onClick={()=>{dispatch({type:"WATCHLIST", payload: id})}}>{isOnWatchList(id)?"Remove from WatchList":"Add to WatchList"}</button>
+      </div>
           </div>
         </div>
       </div>
