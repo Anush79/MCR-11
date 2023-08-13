@@ -1,0 +1,23 @@
+.App {
+  text-align: center;
+}
+
+button{
+  background: #000;
+  color: #fff;
+  padding:0.5rem 1.5rem;
+  border-radius: 10px;
+}
+.buttons{
+  display: flex;
+  justify-content: space-between;
+}
+.active{
+  color:white
+}
+input, textarea, select{
+  min-width: 100px;
+  border:1px solid;
+ border-radius:5px;
+
+}
