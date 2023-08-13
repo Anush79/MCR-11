@@ -4,8 +4,13 @@ export default function WatchList(){
   const {filters} = useData()
   return <div>
     WatchList page
-    {
-      filters.watchList.map(item=>  <MovieCard movie={item} />)
-    }
+    <div className="flex gap-6 flex-wrap justify-center items-center">
+      {filters.watchList.length>0?
+        filters.watchList.map(item =><MovieCard movie={item} />):
+        <p className="text-xl font-mono">No Movie Found</p>
+      }
+     
+    </div>
+  
   </div>
 }
